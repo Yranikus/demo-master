@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>orders</title>
+<!--    <link rel="stylesheet" type="text/css" href="../static/style.css">-->
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+</head>
+<body>
+<!--bar-->
+<div class="bar">
+    <form th:method="POST" th:action="@{/logout}">
+        <input type="submit" value="LogOut" class="logout">
+    </form>
+
+    <a href = "/">SHOP</a>
+    <th:block sec:authorize="hasRole('ADMIN')">
+        <a href = "add">ADD</a>
+    </th:block>
+</div>
+<div class = "logo">
+    <img src="images/pushok-shop.png" id = "logo_pic">
+</div>
+
+<div class = "order-list" th:each = "order : ${orders}">
+    <div class = "the-order">
+        <table>
+            <tr>
+                <th>
+                    PRODUCT  ID
+                </th>
+                <th>
+                    QUANTITY
+                </th>
+            </tr>
+            <tr th:each = "product :${order.getProducts()}">
+                <th th:text="${product.getProduct().id}">
+                </th>
+                <th th:text="${product.quantity}">
+                </th>
+            </tr>
+        </table>
+        <div th:text="'ADDRESS: ' + ${order.adress}"></div>
+        <form th:method="POST" th:action="'/order/delete/' + ${order.id}">
+        <button type="submit" name="button" class = "delete-order-btn">
+            <img src="images/delete.png" alt="" />
+        </button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
